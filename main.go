@@ -171,6 +171,9 @@ func handleConnection(conn net.Conn) {
 			fmt.Println("Error writing to client:", err)
 		}
 
+		// Log to console
+		log.Printf("Client says: %s ", trimmed)
+
 		// Log to client's file
 		logLine := fmt.Sprintf("[%s] %s\n", time.Now().Format(time.RFC3339), trimmed)
 		logFile.WriteString(logLine)
