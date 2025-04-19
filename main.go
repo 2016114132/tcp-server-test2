@@ -31,7 +31,7 @@ func main() {
 
 	fmt.Printf("Server listening on port %s\n", *port)
 
-	// Our program runs an infinite loop
+	// The program runs an infinite loop
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
@@ -49,7 +49,7 @@ func handleConnection(conn net.Conn) {
 	clientAddress := conn.RemoteAddr().String()
 	log.Printf("Client Connected: %s at %s", clientAddress, time.Now().Format(time.RFC3339))
 
-	// Extract only the IP (no port) to name the log file
+	// Extract only the IP (no port) to name the log file. We can probably include the port number to make clients in the same machine have separate files
 	host, _, _ := net.SplitHostPort(clientAddress)
 	logFileName := filepath.Join("logs", host+".log")
 
@@ -101,8 +101,8 @@ func handleConnection(conn net.Conn) {
 				log.Printf("Error sending overflow warning to %s: %v", clientAddress, err)
 			}
 			// Print that message was rejected
-			log.Printf("Client %s sent an oversized message. Rejected.", clientAddress)
-			continue
+			log.Printf("Client %s sent an oversized message. Rejected. Closing connection.", clientAddress)
+			return
 		}
 
 		// Personality mode response for exact messages
